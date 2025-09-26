@@ -18,7 +18,7 @@ function SignupPage() {
 
     setIsLoading(true);
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    //   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       navigate("/main");
     } catch (error: any) {
       alert(error.message);

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../utils/fireBaseConfig";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -12,17 +12,7 @@ function LoginPage() {
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const register = async () => {
-    setIsLoading(true);
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      setUser(userCredential.user);
-    } catch (error: any) {
-      alert(error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  
 
   const login = async () => {
     setIsLoading(true);
