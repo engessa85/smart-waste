@@ -1,27 +1,37 @@
-# 🏠 Smart Home IoT Project  
+# ♻️ Smart Waste Monitoring and Management System  
 
-This project is a **Smart Home IoT application** that allows users to control home devices and monitor real-time signals such as **temperature, humidity, and more**. The system uses **Firebase Realtime Database** as the backend and a **React + TailwindCSS** frontend for a modern, responsive interface.  
+## 📌 Overview  
+Waste management is a critical challenge faced by modern cities. Most municipalities still depend on fixed waste collection schedules, which often cause:  
 
----
+- 🚮 Overflowing bins in some areas.  
+- 🗑️ Empty pickups in others.  
+- ⛽ Unnecessary fuel consumption.  
+- 💰 Increased operational costs.  
 
-## 🚀 Features  
-
-- **Device Control**  
-  - Toggle devices (e.g., Fan, Motor) on/off in real-time.  
-
-- **Signal Monitoring**  
-  - Read and display real-time signals like Temperature 🌡️ and Humidity 💧.  
-
-- **Firebase Integration**  
-  - Uses Firebase Realtime Database for live updates and data persistence.  
-
-- **Modern UI**  
-  - Responsive and clean design built with React + TailwindCSS.  
+To solve this, we developed a **Smart Waste Monitoring and Management System** that uses **IoT and cloud technologies** to make waste collection more efficient, cost-effective, and eco-friendly.  
 
 ---
 
-## 🛠️ Tech Stack  
+## ⚙️ Features  
+- 📡 Real-time monitoring of bin fill levels using sensors.  
+- 🔗 Data collected with ESP32 microcontrollers.  
+- ☁️ Firebase Realtime Database for cloud storage and live updates.  
+- 💻 React.js Web Application for visualization and decision-making.  
+- 🚛 Optimized collection schedules → reduces costs and saves fuel.  
+- 🌍 Promotes cleaner and smarter cities.  
 
-- **Frontend:** React, TailwindCSS  
-- **Backend:** Firebase Realtime Database  
-- **Other Tools:** React Router, Firebase SDK  
+---
+
+## 🛠️ System Architecture  
+1. **ESP32 + Sensors** → Detect bin fill level & conditions.  
+2. **Firebase Realtime Database** → Store sensor data in the cloud.  
+3. **React.js Web App** → Display live bin status for operators.  
+4. **Decision-making** → Collect only when necessary.  
+
+---
+
+## 🧑‍💻 Tech Stack  
+- **Hardware**: ESP32, Ultrasonic/Infrared sensors (for bin fill level).  
+- **Backend**: Firebase Realtime Database.  
+- **Frontend**: React.js + TailwindCSS.  
+- **Programming Languages**: C++ (ESP32), JavaScript (React).  
