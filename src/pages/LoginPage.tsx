@@ -17,8 +17,7 @@ function LoginPage() {
   const login = async () => {
     setIsLoading(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      setUser(userCredential.user);
+      await signInWithEmailAndPassword(auth, email, password);
       navigate("/main");
     } catch (error: any) {
       alert(error.message);
@@ -33,27 +32,38 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
+        {/* Header Badge */}
+        <div className="text-center mb-8">
+          <div className="inline-block p-1 bg-gradient-to-r from-blue-500 to-green-500 rounded-full mb-4">
+            <div className="bg-white bg-opacity-90 backdrop-blur-sm rounded-full px-6 py-2 shadow-lg">
+              <span className="text-blue-600 text-sm font-medium tracking-wider uppercase">Smart Waste</span>
+            </div>
+          </div>
+        </div>
+
         {/* Login Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6">
+        <div className="bg-white rounded-3xl shadow-2xl p-8 space-y-6 border border-gray-200">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h1>
-            <p className="text-slate-600">Sign in to your account</p>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-green-600 to-blue-600 bg-clip-text text-transparent mb-2">
+              Welcome Back
+            </h1>
+            <p className="text-gray-600">Sign in to your smart waste system</p>
           </div>
 
           {!user ? (
             <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); login(); }}>
               {/* Email Input */}
               <div className="space-y-2">
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   Email Address
                 </label>
                 <input
                   id="email"
                   type="email"
                   placeholder="Enter your email"
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-slate-50 focus:bg-white"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white shadow-sm"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -62,14 +72,14 @@ function LoginPage() {
 
               {/* Password Input */}
               <div className="space-y-2">
-                <label htmlFor="password" className="block text-sm font-medium text-slate-700">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                   Password
                 </label>
                 <input
                   id="password"
                   type="password"
                   placeholder="Enter your password"
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-slate-50 focus:bg-white"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white shadow-sm"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -80,7 +90,7 @@ function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                className="w-full bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
               >
                 {isLoading ? "Signing In..." : "Sign In"}
               </button>
@@ -89,14 +99,14 @@ function LoginPage() {
               <div className="flex items-center justify-between text-sm">
                 <button
                   type="button"
-                  className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                  className="text-blue-600 hover:text-blue-700 transition-colors duration-200"
                   onClick={() => alert("Forgot password functionality not implemented yet")}
                 >
                   Forgot Password?
                 </button>
                 <button
                   type="button"
-                  className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                  className="text-green-600 hover:text-green-700 transition-colors duration-200"
                   onClick={() => navigate("/signup")}
                 >
                   Sign Up
@@ -119,8 +129,8 @@ function LoginPage() {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-6">
-          <p className="text-slate-500 text-sm">© 2025 Smart Home. All rights reserved.</p>
+        <div className="text-center mt-8">
+          <p className="text-gray-600 text-sm">Smart Waste Management System</p>
         </div>
       </div>
     </div>

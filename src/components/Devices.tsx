@@ -1,122 +1,187 @@
 
 import { useEffect, useState } from "react";
-import { getDatabase, ref, set, onValue } from "firebase/database";
+import { getDatabase, ref, onValue } from "firebase/database";
 import { app } from "../utils/fireBaseConfig";
 
 function Devices() {
-  const [fan, setFan] = useState(false);
-  const [motor, setMotor] = useState(false);
+  const [binLevel, setBinLevel] = useState<number | null>(null);
+  const [mass, setMass] = useState<number | null>(null);
   const [temp, setTemp] = useState<number | null>(null);
   const [humidity, setHumidity] = useState<number | null>(null);
+  const [gasEmissions, setGasEmissions] = useState<number | null>(null);
 
   const db = getDatabase(app);
 
   useEffect(() => {
-    // 🔹 Listen for devices state
-    const devicesRef = ref(db, "devices");
-    onValue(devicesRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        if (typeof data.fan === "boolean") setFan(data.fan);
-        if (typeof data.motor === "boolean") setMotor(data.motor);
-      }
-    });
-
-    // 🔹 Listen for signals (temp & humidity)
+    // 🔹 Listen for signals from sensors
     const signalsRef = ref(db, "signals");
     onValue(signalsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
+        if (typeof data.binLevel === "number") setBinLevel(data.binLevel);
+        if (typeof data.mass === "number") setMass(data.mass);
         if (typeof data.temp === "number") setTemp(data.temp);
         if (typeof data.humidity === "number") setHumidity(data.humidity);
+        if (typeof data.gasEmissions === "number") setGasEmissions(data.gasEmissions);
       }
     });
   }, [db]);
 
-  const toggleFan = () => {
-    set(ref(db, "devices/fan"), !fan);
-  };
-
-  const toggleMotor = () => {
-    set(ref(db, "devices/motor"), !motor);
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4 md:p-8">
-      <div className="max-w-4xl mx-auto">
-        <header className="text-center mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-2">
-            Smart Home Dashboard
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 p-4 md:p-8">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-block p-1 bg-gradient-to-r from-blue-500 to-green-500 rounded-full mb-4">
+            <div className="bg-white bg-opacity-90 backdrop-blur-sm rounded-full px-6 py-2 shadow-lg">
+              <span className="text-blue-600 text-sm font-medium tracking-wider uppercase">Live Monitoring</span>
+            </div>
+          </div>
+          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 via-green-600 to-blue-600 bg-clip-text text-transparent mb-4">
+            Smart Waste System
           </h1>
-          <p className="text-slate-600 text-lg">Control your devices and monitor your environment</p>
-        </header>
+          <p className="text-gray-600 text-xl max-w-2xl mx-auto">
+            Real-time environmental monitoring for sustainable waste management
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Devices Section */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
-            <h2 className="text-2xl font-semibold text-slate-800 mb-6">Devices</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <button
-                className={`group relative overflow-hidden bg-gradient-to-r ${
-                  fan
-                    ? "from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700"
-                    : "from-slate-400 to-slate-500 hover:from-slate-500 hover:to-slate-600"
-                } text-white font-medium py-4 px-6 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 active:scale-95`}
-                onClick={toggleFan}
-              >
-                <div className="flex items-center justify-center space-x-2">
-                  <span className="text-lg">💨</span>
-                  <span>Fan {fan ? "ON" : "OFF"}</span>
-                </div>
-                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-              </button>
-
-              <button
-                className={`group relative overflow-hidden bg-gradient-to-r ${
-                  motor
-                    ? "from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
-                    : "from-slate-400 to-slate-500 hover:from-slate-500 hover:to-slate-600"
-                } text-white font-medium py-4 px-6 rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 active:scale-95`}
-                onClick={toggleMotor}
-              >
-                <div className="flex items-center justify-center space-x-2">
-                  <span className="text-lg">⚙️</span>
-                  <span>Motor {motor ? "ON" : "OFF"}</span>
-                </div>
-                <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
-              </button>
+        {/* Sensor Grid */}
+        <div className="flex flex-wrap justify-center gap-8">
+          {/* Bin Level Card */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-200 hover:shadow-2xl transition-all duration-300 w-80">
+            <div className="flex items-center justify-between mb-6">
+              <div className="p-3 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl">
+                <span className="text-3xl">📏</span>
+              </div>
+              <div className="text-right">
+                <h3 className="text-2xl font-bold text-gray-800">Bin Level</h3>
+                <p className="text-emerald-600 text-sm">Ultrasonic Sensor</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl font-bold text-gray-800 mb-2">
+                {binLevel !== null ? `${binLevel}` : "—"}
+              </div>
+              <div className="text-emerald-600 text-lg">cm</div>
+            </div>
+            <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full transition-all duration-1000"
+                style={{ width: binLevel !== null ? `${Math.min((binLevel / 100) * 100, 100)}%` : '0%' }}
+              ></div>
             </div>
           </div>
 
-          {/* Signals Section */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
-            <h2 className="text-2xl font-semibold text-slate-800 mb-6">Environment</h2>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-red-50 to-red-100 rounded-xl border border-red-200">
-                <div className="flex items-center space-x-3">
-                  <span className="text-2xl">🌡️</span>
-                  <div>
-                    <p className="text-sm text-slate-600">Temperature</p>
-                    <p className="text-xl font-semibold text-slate-800">
-                      {temp !== null ? `${temp} °C` : "—"}
-                    </p>
-                  </div>
-                </div>
+          {/* Mass Card */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-200 hover:shadow-2xl transition-all duration-300 w-80">
+            <div className="flex items-center justify-between mb-6">
+              <div className="p-3 bg-gradient-to-br from-amber-100 to-orange-100 rounded-2xl">
+                <span className="text-3xl">⚖️</span>
               </div>
-
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200">
-                <div className="flex items-center space-x-3">
-                  <span className="text-2xl">💧</span>
-                  <div>
-                    <p className="text-sm text-slate-600">Humidity</p>
-                    <p className="text-xl font-semibold text-slate-800">
-                      {humidity !== null ? `${humidity} %` : "—"}
-                    </p>
-                  </div>
-                </div>
+              <div className="text-right">
+                <h3 className="text-2xl font-bold text-gray-800">Mass</h3>
+                <p className="text-amber-600 text-sm">Weight Sensor</p>
               </div>
             </div>
+            <div className="text-center">
+              <div className="text-5xl font-bold text-gray-800 mb-2">
+                {mass !== null ? `${mass}` : "—"}
+              </div>
+              <div className="text-amber-600 text-lg">kg</div>
+            </div>
+            <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-amber-400 to-orange-400 rounded-full transition-all duration-1000"
+                style={{ width: mass !== null ? `${Math.min((mass / 50) * 100, 100)}%` : '0%' }}
+              ></div>
+            </div>
           </div>
+
+          {/* Temperature Card */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-200 hover:shadow-2xl transition-all duration-300 w-80">
+            <div className="flex items-center justify-between mb-6">
+              <div className="p-3 bg-gradient-to-br from-red-100 to-pink-100 rounded-2xl">
+                <span className="text-3xl">🌡️</span>
+              </div>
+              <div className="text-right">
+                <h3 className="text-2xl font-bold text-gray-800">Temperature</h3>
+                <p className="text-red-600 text-sm">Thermal Sensor</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl font-bold text-gray-800 mb-2">
+                {temp !== null ? `${temp}` : "—"}
+              </div>
+              <div className="text-red-600 text-lg">°C</div>
+            </div>
+            <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-red-400 to-pink-400 rounded-full transition-all duration-1000"
+                style={{ width: temp !== null ? `${Math.min((temp / 50) * 100, 100)}%` : '0%' }}
+              ></div>
+            </div>
+          </div>
+
+          {/* Humidity Card */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-200 hover:shadow-2xl transition-all duration-300 w-80">
+            <div className="flex items-center justify-between mb-6">
+              <div className="p-3 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl">
+                <span className="text-3xl">💧</span>
+              </div>
+              <div className="text-right">
+                <h3 className="text-2xl font-bold text-gray-800">Humidity</h3>
+                <p className="text-blue-600 text-sm">Moisture Sensor</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl font-bold text-gray-800 mb-2">
+                {humidity !== null ? `${humidity}` : "—"}
+              </div>
+              <div className="text-blue-600 text-lg">%</div>
+            </div>
+            <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full transition-all duration-1000"
+                style={{ width: humidity !== null ? `${humidity}%` : '0%' }}
+              ></div>
+            </div>
+          </div>
+
+          {/* Gas Emissions Card */}
+          <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-200 hover:shadow-2xl transition-all duration-300 w-80">
+            <div className="flex items-center justify-between mb-6">
+              <div className="p-3 bg-gradient-to-br from-purple-100 to-violet-100 rounded-2xl">
+                <span className="text-3xl">☁️</span>
+              </div>
+              <div className="text-right">
+                <h3 className="text-2xl font-bold text-gray-800">Gas Emissions</h3>
+                <p className="text-purple-600 text-sm">Air Quality Sensor</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl font-bold text-gray-800 mb-2">
+                {gasEmissions !== null ? `${gasEmissions}` : "—"}
+              </div>
+              <div className="text-purple-600 text-lg">ppm</div>
+            </div>
+            <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-purple-400 to-violet-400 rounded-full transition-all duration-1000"
+                style={{ width: gasEmissions !== null ? `${Math.min((gasEmissions / 1000) * 100, 100)}%` : '0%' }}
+              ></div>
+            </div>
+          </div>
+
+          
+
+          
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-16">
+          <p className="text-gray-600 text-sm">
+            Smart Waste Management System • Real-time Environmental Monitoring
+          </p>
         </div>
       </div>
     </div>
