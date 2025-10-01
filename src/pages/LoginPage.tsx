@@ -96,17 +96,11 @@ function LoginPage() {
               </button>
 
               {/* Additional Links */}
-              <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center justify-center text-sm gap-2">
+                <div>Don't have account </div>
                 <button
                   type="button"
-                  className="text-blue-600 hover:text-blue-700 transition-colors duration-200"
-                  onClick={() => alert("Forgot password functionality not implemented yet")}
-                >
-                  Forgot Password?
-                </button>
-                <button
-                  type="button"
-                  className="text-green-600 hover:text-green-700 transition-colors duration-200"
+                  className="text-green-600 hover:text-green-700 transition-colors duration-200 cursor-pointer hover:scale-105"
                   onClick={() => navigate("/signup")}
                 >
                   Sign Up
