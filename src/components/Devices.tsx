@@ -71,7 +71,7 @@ function Devices() {
                   <img src="/logo.png" alt="Logo" className="h-10" />
                   <h2 className="text-3xl font-bold text-gray-800">Bin ID: 1</h2>
                 </div>
-                <button onClick={() => setModalOpen(true)} className="text-3xl hover:scale-110 transition-transform">🗺️</button>
+                <button onClick={() => setModalOpen(true)} className="text-3xl hover:scale-110 transition-transform cursor-pointer">🗺️</button>
               </div>
               <p className="text-gray-600">Primary waste bin monitoring</p>
             </div>
@@ -92,6 +92,11 @@ function Devices() {
                   </div>
                 </div>
                 <div className="text-center">
+                  {binLevel_1 !== null && binLevel_1 < 10 ? (
+                    <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">High</div>
+                  ) : (
+                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">Normal</div>
+                  )}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {binLevel_1 !== null ? `${binLevel_1}` : "—"}
                   </div>
@@ -103,7 +108,7 @@ function Devices() {
                     style={{
                       width:
                         binLevel_1 !== null
-                          ? `${Math.min((binLevel_1 / 100) * 100, 100)}%`
+                          ? `${Math.min(((100 - binLevel_1) / 100) * 100, 100)}%`
                           : "0%",
                     }}
                   ></div>
@@ -126,6 +131,11 @@ function Devices() {
                   </div>
                 </div>
                 <div className="text-center">
+                  {gasEmissions_1 !== null && gasEmissions_1 > 600 ? (
+                    <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">High</div>
+                  ) : (
+                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">Normal</div>
+                  )}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {gasEmissions_1 !== null ? `${gasEmissions_1}` : "—"}
                   </div>
@@ -159,10 +169,15 @@ function Devices() {
                   </div>
                 </div>
                 <div className="text-center">
+                  {smoke_1 !== null && smoke_1 > 3000 ? (
+                   <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">High</div>
+                  ) : (
+                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">Normal</div>
+                  )}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {smoke_1 !== null ? `${smoke_1}` : "—"}
                   </div>
-                  <div className="text-red-600 text-lg">%</div>
+                  <div className="text-red-600 text-lg">ppm</div>
                 </div>
                 <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div
@@ -170,7 +185,7 @@ function Devices() {
                     style={{
                       width:
                         smoke_1 !== null
-                          ? `${Math.min((smoke_1 / 100) * 100, 100)}%`
+                          ? `${Math.min((smoke_1 / 4095) * 100, 100)}%`
                           : "0%",
                     }}
                   ></div>
@@ -187,7 +202,7 @@ function Devices() {
                   <img src="/logo.png" alt="Logo" className="h-10" />
                   <h2 className="text-3xl font-bold text-gray-800">Bin ID: 2</h2>
                 </div>
-                <button onClick={() => setModalOpen(true)} className="text-3xl hover:scale-110 transition-transform">🗺️</button>
+                <button onClick={() => setModalOpen(true)} className="text-3xl hover:scale-110 transition-transform cursor-pointer">🗺️</button>
               </div>
               <p className="text-gray-600">Secondary waste bin monitoring</p>
             </div>
@@ -209,6 +224,11 @@ function Devices() {
                   </div>
                 </div>
                 <div className="text-center">
+                  {binLevel_2 !== null && binLevel_2 < 10 ? (
+                    <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">High</div>
+                  ) : (
+                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">Normal</div>
+                  )}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {binLevel_2 !== null ? `${binLevel_2}` : "—"}
                   </div>
@@ -220,7 +240,7 @@ function Devices() {
                     style={{
                       width:
                         binLevel_2 !== null
-                          ? `${Math.min((binLevel_2 / 100) * 100, 100)}%`
+                          ? `${Math.min(((100 - binLevel_2) / 100) * 100, 100)}%`
                           : "0%",
                     }}
                   ></div>
@@ -243,6 +263,11 @@ function Devices() {
                   </div>
                 </div>
                 <div className="text-center">
+                  {gasEmissions_2 !== null && gasEmissions_2 > 600 ? (
+                    <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">High</div>
+                  ) : (
+                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">Normal</div>
+                  )}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {gasEmissions_2 !== null ? `${gasEmissions_2}` : "—"}
                   </div>
@@ -275,10 +300,15 @@ function Devices() {
                   </div>
                 </div>
                 <div className="text-center">
+                  {smoke_2 !== null && smoke_2 > 3000 ? (
+                   <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">High</div>
+                  ) : (
+                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">Normal</div>
+                  )}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {smoke_2 !== null ? `${smoke_2}` : "—"}
                   </div>
-                  <div className="text-red-600 text-lg">%</div>
+                  <div className="text-red-600 text-lg">ppm</div>
                 </div>
                 <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div
@@ -286,7 +316,7 @@ function Devices() {
                     style={{
                       width:
                         smoke_2 !== null
-                          ? `${Math.min((smoke_2 / 100) * 100, 100)}%`
+                          ? `${Math.min((smoke_2 / 4095) * 100, 100)}%`
                           : "0%",
                     }}
                   ></div>
