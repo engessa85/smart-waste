@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { app } from "../utils/fireBaseConfig";
+import Map from "./Map";
 
 function Devices() {
   const [binLevel_1, setBinLevel_1] = useState<number | null>(null);
@@ -9,6 +10,7 @@ function Devices() {
   const [binLevel_2, setBinLevel_2] = useState<number | null>(null);
   const [gasEmissions_2, setGasEmissions_2] = useState<number | null>(null);
   const [smoke_2, setSmoke_2] = useState<number | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const db = getDatabase(app);
 
@@ -64,9 +66,12 @@ function Devices() {
           {/* Bin 1 Container */}
           <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-200 hover:shadow-2xl transition-all duration-300">
             <div className="mb-8">
-              <div className="flex items-center gap-1 mb-2">
-                <img src="/logo.png" alt="Logo" className="h-10" />
-                <h2 className="text-3xl font-bold text-gray-800">Bin ID: 1</h2>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-1">
+                  <img src="/logo.png" alt="Logo" className="h-10" />
+                  <h2 className="text-3xl font-bold text-gray-800">Bin ID: 1</h2>
+                </div>
+                <button onClick={() => setModalOpen(true)} className="text-3xl hover:scale-110 transition-transform">🗺️</button>
               </div>
               <p className="text-gray-600">Primary waste bin monitoring</p>
             </div>
@@ -177,9 +182,12 @@ function Devices() {
           {/* Bin 2 Container */}
           <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-200 hover:shadow-2xl transition-all duration-300">
             <div className="mb-8">
-              <div className="flex items-center gap-1 mb-2">
-                <img src="/logo.png" alt="Logo" className="h-10" />
-                <h2 className="text-3xl font-bold text-gray-800">Bin ID: 2</h2>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-1">
+                  <img src="/logo.png" alt="Logo" className="h-10" />
+                  <h2 className="text-3xl font-bold text-gray-800">Bin ID: 2</h2>
+                </div>
+                <button onClick={() => setModalOpen(true)} className="text-3xl hover:scale-110 transition-transform">🗺️</button>
               </div>
               <p className="text-gray-600">Secondary waste bin monitoring</p>
             </div>
@@ -295,6 +303,24 @@ function Devices() {
           </p>
         </div>
       </div>
+
+      {/* Modal */}
+      {modalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-4 rounded-lg max-w-4xl w-full mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">Bin Location</h2>
+              <button
+                onClick={() => setModalOpen(false)}
+                className="text-gray-500 hover:text-gray-700 text-2xl"
+              >
+                ×
+              </button>
+            </div>
+            <Map />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
