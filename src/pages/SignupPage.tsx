@@ -20,7 +20,7 @@ function SignupPage() {
     setIsLoading(true);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/main");
+      navigate("/map");
     } catch (error: any) {
       alert(error.message);
     } finally {

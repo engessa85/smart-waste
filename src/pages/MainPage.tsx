@@ -40,6 +40,12 @@ function MainPage() {
                 </p>
               </div>
               <button
+                onClick={() => navigate("/map")}
+                className="bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-sm md:text-base"
+              >
+                Map
+              </button>
+              <button
                 onClick={handleLogout}
                 className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-sm md:text-base"
               >

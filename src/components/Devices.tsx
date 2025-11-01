@@ -98,9 +98,9 @@ function Devices() {
                     <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">Normal</div>
                   )}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
-                    {binLevel_1 !== null ? `${binLevel_1}` : "—"}
+                    {binLevel_1 !== null ? `${Math.round(((100 - binLevel_1) / 100) * 100)}` : "—"}
                   </div>
-                  <div className="text-emerald-600 text-lg">cm</div>
+                  <div className="text-emerald-600 text-lg">%</div>
                 </div>
                 <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div
@@ -230,9 +230,9 @@ function Devices() {
                     <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">Normal</div>
                   )}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
-                    {binLevel_2 !== null ? `${binLevel_2}` : "—"}
+                    {binLevel_2 !== null ? `${Math.round(((100 - binLevel_2) / 100) * 100)}` : "—"}
                   </div>
-                  <div className="text-emerald-600 text-lg">cm</div>
+                  <div className="text-emerald-600 text-lg">%</div>
                 </div>
                 <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div
