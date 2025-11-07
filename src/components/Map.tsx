@@ -1,13 +1,63 @@
 
 
-function Map() {
+import { useState } from "react";
+import { APIProvider, Map as GoogleMap, Marker, InfoWindow } from "@vis.gl/react-google-maps";
+
+const API_KEY = "AIzaSyBoryl8NBe9Sr3OQVfeiyclmT4LNDiUzWU";
+
+type Location = {
+  id: number;
+  name: string;
+  description: string;
+  position: { lat: number; lng: number };
+};
+
+function Map(props:Location) {
+  
+  const location: Location = {
+    id: props.id,
+    name: props.name,
+    description: props.description,
+    position: { lat: props.position.lat, lng: props.position.lng },
+  };
+
+  const [selected, setSelected] = useState<Location | null>(null);
+
   return (
-    <div>
+    <div className="bg-slate-50 p-4">
+      <APIProvider apiKey={API_KEY}>
+        <GoogleMap
+          style={{ width: "100%", height: "70vh", borderRadius: "12px" }}
+          defaultCenter={location.position}
+          defaultZoom={14}
+          gestureHandling="greedy"
+          disableDefaultUI={false}
+        >
+          <Marker
+            position={location.position}
+            icon={{
+              url: "/logo.png",
+              scaledSize: { width: 40, height: 40 },
+              anchor: { x: 20, y: 20 },
+            }}
+            onClick={() => setSelected(location)}
+          />
 
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3478.8233226295038!2d48.0675133711843!3d29.316857802972883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3fcf9de6658fa4e1%3A0x5adb796377624b51!2z2KfZhNix2YXZitir2YrYqdiMINin2YTZg9mI2YrYquKAjg!5e0!3m2!1sar!2seg!4v1760999930133!5m2!1sar!2seg"  height="450" style={{border: 0, width: "100%"}} allowFullScreen loading="lazy" ></iframe>
-
+          {selected && (
+            <InfoWindow
+              position={selected.position}
+              onCloseClick={() => setSelected(null)}
+            >
+              <div className="p-4 bg-white rounded-lg shadow-md max-w-xs">
+                <h3 className="text-lg font-semibold mb-1">{selected.name}</h3>
+                <p className="text-sm text-gray-600">{selected.description}</p>
+              </div>
+            </InfoWindow>
+          )}
+        </GoogleMap>
+      </APIProvider>
     </div>
-  )
+  );
 }
 
-export default Map
+export default Map;

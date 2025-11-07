@@ -20,19 +20,34 @@ type Location = {
   position: { lat: number; lng: number };
 };
 
+
+
+
 function MapPage() {
   const locations: Location[] = [
     {
       id: 1,
       name: "Recycling bin #1",
-      description: "Montior the status of bin #1",
-      position: { lat: 29.3389, lng: 48.0273 },
+      description: "Monitor the status of bin #1",
+      position: { lat: 29.320483, lng: 48.044731 },
     },
     {
       id: 2,
       name: "Recycling bin #2",
-      description: "Montior the status of bin #2",
-      position: { lat: 29.3342, lng: 48.0289 },
+      description: "Monitor the status of bin #2",
+      position: { lat: 29.321241, lng: 48.044704 },
+    },
+    {
+      id: 3,
+      name: "Recycling bin #3",
+      description: "Monitor the status of bin #3",
+      position: { lat: 29.321653, lng: 48.044543 },
+    },
+    {
+      id: 4,
+      name: "Start Point",
+      description: "Starting location",
+      position: { lat: 29.337954, lng: 48.020295 },
     }
   ];
 
@@ -56,6 +71,9 @@ function MapPage() {
   const [binLevel_2, setBinLevel_2] = useState<number | null>(null);
   const [gasEmissions_2, setGasEmissions_2] = useState<number | null>(null);
   const [smoke_2, setSmoke_2] = useState<number | null>(null);
+  const [binLevel_3, setBinLevel_3] = useState<number | null>(null);
+  const [gasEmissions_3, setGasEmissions_3] = useState<number | null>(null);
+  const [smoke_3, setSmoke_3] = useState<number | null>(null);
 
   const db = getDatabase(app);
 
@@ -80,6 +98,17 @@ function MapPage() {
         if (typeof data.gasEmissions === "number")
           setGasEmissions_2(data.gasEmissions);
         if (typeof data.smoke === "number") setSmoke_2(data.smoke);
+      }
+    });
+
+    const signalsRef3 = ref(db, "signals_bin3");
+    onValue(signalsRef3, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        if (typeof data.binLevel === "number") setBinLevel_3(data.binLevel);
+        if (typeof data.gasEmissions === "number")
+          setGasEmissions_3(data.gasEmissions);
+        if (typeof data.smoke === "number") setSmoke_3(data.smoke);
       }
     });
   }, [db]);
@@ -128,16 +157,20 @@ function MapPage() {
               defaultZoom={14}
               gestureHandling="greedy"
               disableDefaultUI={false}
-              zoom = {15}
+              
             >
               {locations.map((loc) => (
                 <Marker
                   key={loc.id}
                   position={loc.position}
-                  icon={{
+                  icon={loc.id === 4 ? {
+                    url: "/master.jpg",
+                    scaledSize: { width: 40, height: 40 },
+                    
+                  } : {
                     url: "/logo.png",
                     scaledSize: { width: 30, height: 30 },
-                    anchor: { x: 25, y: 25 }
+                    // anchor: { x: 25, y: 25 }
                   }}
                   onClick={() => setSelected(loc)}
                 />
@@ -153,10 +186,10 @@ function MapPage() {
                       <h3 className="text-lg font-bold text-gray-800 mb-1">{selected.name}</h3>
                       <p className="text-sm text-gray-600">{selected.description}</p>
                     </div>
-                    {(selected.id === 1 || selected.id === 2) && (() => {
-                      const binLevel = selected.id === 1 ? binLevel_1 : binLevel_2;
-                      const gasEmissions = selected.id === 1 ? gasEmissions_1 : gasEmissions_2;
-                      const smoke = selected.id === 1 ? smoke_1 : smoke_2;
+                    {(selected.id === 1 || selected.id === 2 || selected.id === 3) && (() => {
+                      const binLevel = selected.id === 1 ? binLevel_1 : selected.id === 2 ? binLevel_2 : binLevel_3;
+                      const gasEmissions = selected.id === 1 ? gasEmissions_1 : selected.id === 2 ? gasEmissions_2 : gasEmissions_3;
+                      const smoke = selected.id === 1 ? smoke_1 : selected.id === 2 ? smoke_2 : smoke_3;
 
                       return (
                         <div className="space-y-3">
