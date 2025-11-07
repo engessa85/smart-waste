@@ -164,7 +164,7 @@ function MapPage() {
                   key={loc.id}
                   position={loc.position}
                   icon={loc.id === 4 ? {
-                    url: "/master.jpg",
+                    url: "/truck_logo.png",
                     scaledSize: { width: 40, height: 40 },
                     
                   } : {
@@ -200,13 +200,28 @@ function MapPage() {
                                 <span className="text-lg">📏</span>
                                 <span className="text-sm font-medium text-gray-700">Bin Level</span>
                               </div>
-                              <span className={`text-xs font-bold px-2 py-1 rounded-full ${
-                                binLevel !== null && binLevel < 10
-                                  ? 'bg-red-100 text-red-700'
-                                  : 'bg-green-100 text-green-700'
-                              }`}>
-                                {binLevel !== null && binLevel < 10 ? 'High' : 'Normal'}
-                              </span>
+                              {(() => {
+                                const percentage = binLevel !== null ? Math.round(((100 - binLevel) / 100) * 100) : 0;
+                                if (percentage < 33) {
+                                  return (
+                                    <span className="text-xs font-bold px-2 py-1 rounded-full bg-green-500 text-white">
+                                      Low
+                                    </span>
+                                  );
+                                } else if (percentage < 66) {
+                                  return (
+                                    <span className="text-xs font-bold px-2 py-1 rounded-full bg-yellow-400 text-black">
+                                      Average
+                                    </span>
+                                  );
+                                } else {
+                                  return (
+                                    <span className="text-xs font-bold px-2 py-1 rounded-full bg-red-500 text-white animate-pulse">
+                                      High
+                                    </span>
+                                  );
+                                }
+                              })()}
                             </div>
                             <div className="text-xl font-bold text-gray-800 mb-1">
                               {binLevel !== null ? `${Math.round(((100 - binLevel) / 100) * 100)}` : "—"}
@@ -214,8 +229,18 @@ function MapPage() {
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
                               <div
-                                className="bg-gradient-to-r from-emerald-400 to-teal-400 h-2 rounded-full transition-all duration-300"
+                                className="h-2 rounded-full transition-all duration-300"
                                 style={{
+                                  background: (() => {
+                                    const percentage = binLevel !== null ? Math.round(((100 - binLevel) / 100) * 100) : 0;
+                                    if (percentage < 33) {
+                                      return 'linear-gradient(to right, #10b981, #14b8a6)'; // green to teal
+                                    } else if (percentage < 66) {
+                                      return 'linear-gradient(to right, #fbbf24, #f59e0b)'; // yellow to amber
+                                    } else {
+                                      return 'linear-gradient(to right, #ef4444, #dc2626)'; // red to red-600
+                                    }
+                                  })(),
                                   width: binLevel !== null ? `${Math.min(((100 - binLevel) / 100) * 100, 100)}%` : "0%"
                                 }}
                               ></div>
@@ -229,13 +254,28 @@ function MapPage() {
                                 <span className="text-lg">☁️</span>
                                 <span className="text-sm font-medium text-gray-700">Gas Emissions</span>
                               </div>
-                              <span className={`text-xs font-bold px-2 py-1 rounded-full ${
-                                gasEmissions !== null && gasEmissions > 600
-                                  ? 'bg-red-100 text-red-700'
-                                  : 'bg-green-100 text-green-700'
-                              }`}>
-                                {gasEmissions !== null && gasEmissions > 600 ? 'High' : 'Normal'}
-                              </span>
+                              {(() => {
+                                const emissions = gasEmissions;
+                                if (emissions !== null && emissions < 200) {
+                                  return (
+                                    <span className="text-xs font-bold px-2 py-1 rounded-full bg-green-500 text-white">
+                                      Low
+                                    </span>
+                                  );
+                                } else if (emissions !== null && emissions < 600) {
+                                  return (
+                                    <span className="text-xs font-bold px-2 py-1 rounded-full bg-yellow-400 text-black">
+                                      Average
+                                    </span>
+                                  );
+                                } else {
+                                  return (
+                                    <span className="text-xs font-bold px-2 py-1 rounded-full bg-red-500 text-white animate-pulse">
+                                      High
+                                    </span>
+                                  );
+                                }
+                              })()}
                             </div>
                             <div className="text-xl font-bold text-gray-800 mb-1">
                               {gasEmissions !== null ? `${gasEmissions}` : "—"}
@@ -243,8 +283,18 @@ function MapPage() {
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
                               <div
-                                className="bg-gradient-to-r from-purple-400 to-violet-400 h-2 rounded-full transition-all duration-300"
+                                className="h-2 rounded-full transition-all duration-300"
                                 style={{
+                                  background: (() => {
+                                    const emissions = gasEmissions;
+                                    if (emissions !== null && emissions < 200) {
+                                      return 'linear-gradient(to right, #10b981, #14b8a6)'; // green to teal
+                                    } else if (emissions !== null && emissions < 600) {
+                                      return 'linear-gradient(to right, #fbbf24, #f59e0b)'; // yellow to amber
+                                    } else {
+                                      return 'linear-gradient(to right, #ef4444, #dc2626)'; // red to red-600
+                                    }
+                                  })(),
                                   width: gasEmissions !== null ? `${Math.min((gasEmissions / 1000) * 100, 100)}%` : "0%"
                                 }}
                               ></div>
@@ -258,13 +308,28 @@ function MapPage() {
                                 <span className="text-lg">🔥</span>
                                 <span className="text-sm font-medium text-gray-700">Smoke Detector</span>
                               </div>
-                              <span className={`text-xs font-bold px-2 py-1 rounded-full ${
-                                smoke !== null && smoke > 3000
-                                  ? 'bg-red-100 text-red-700'
-                                  : 'bg-green-100 text-green-700'
-                              }`}>
-                                {smoke !== null && smoke > 3000 ? 'High' : 'Normal'}
-                              </span>
+                              {(() => {
+                                const smokeLevel = smoke;
+                                if (smokeLevel !== null && smokeLevel < 1000) {
+                                  return (
+                                    <span className="text-xs font-bold px-2 py-1 rounded-full bg-green-500 text-white">
+                                      Low
+                                    </span>
+                                  );
+                                } else if (smokeLevel !== null && smokeLevel < 3000) {
+                                  return (
+                                    <span className="text-xs font-bold px-2 py-1 rounded-full bg-yellow-400 text-black">
+                                      Average
+                                    </span>
+                                  );
+                                } else {
+                                  return (
+                                    <span className="text-xs font-bold px-2 py-1 rounded-full bg-red-500 text-white animate-pulse">
+                                      High
+                                    </span>
+                                  );
+                                }
+                              })()}
                             </div>
                             <div className="text-xl font-bold text-gray-800 mb-1">
                               {smoke !== null ? `${smoke}` : "—"}
@@ -272,8 +337,18 @@ function MapPage() {
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
                               <div
-                                className="bg-gradient-to-r from-red-400 to-orange-400 h-2 rounded-full transition-all duration-300"
+                                className="h-2 rounded-full transition-all duration-300"
                                 style={{
+                                  background: (() => {
+                                    const smokeLevel = smoke;
+                                    if (smokeLevel !== null && smokeLevel < 1000) {
+                                      return 'linear-gradient(to right, #10b981, #14b8a6)'; // green to teal
+                                    } else if (smokeLevel !== null && smokeLevel < 3000) {
+                                      return 'linear-gradient(to right, #fbbf24, #f59e0b)'; // yellow to amber
+                                    } else {
+                                      return 'linear-gradient(to right, #ef4444, #dc2626)'; // red to red-600
+                                    }
+                                  })(),
                                   width: smoke !== null ? `${Math.min((smoke / 4095) * 100, 100)}%` : "0%"
                                 }}
                               ></div>

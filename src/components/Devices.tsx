@@ -112,7 +112,7 @@ function Devices() {
                     <h3 className="text-2xl font-bold text-gray-800">
                       Bin Level
                     </h3>
-                    <p className="text-emerald-600 text-sm">
+                    <p className="text-gray-600 text-sm">
                       Ultrasonic Sensor
                     </p>
                   </div>
@@ -121,26 +121,49 @@ function Devices() {
                   </div>
                 </div>
                 <div className="text-center">
-                  {binLevel_1 !== null && binLevel_1 < 10 ? (
-                    <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
-                      High
-                    </div>
-                  ) : (
-                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
-                      Normal
-                    </div>
-                  )}
+                  {(() => {
+                    const percentage = binLevel_1 !== null ? Math.round(((100 - binLevel_1) / 100) * 100) : 0;
+                    if (percentage < 33) {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
+                          Low
+                        </div>
+                      );
+                    } else if (percentage < 66) {
+                      return (
+                        <div className="text-black text-sm font-bold mb-1 bg-yellow-400 inline-block px-8 py-1 rounded-full">
+                          Average
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
+                          High
+                        </div>
+                      );
+                    }
+                  })()}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {binLevel_1 !== null
                       ? `${Math.round(((100 - binLevel_1) / 100) * 100)}`
                       : "—"}
                   </div>
-                  <div className="text-emerald-600 text-lg">%</div>
+                  <div className="text-gray-600 text-lg">%</div>
                 </div>
                 <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full transition-all duration-1000"
+                    className="h-full rounded-full transition-all duration-1000"
                     style={{
+                      background: (() => {
+                        const percentage = binLevel_1 !== null ? Math.round(((100 - binLevel_1) / 100) * 100) : 0;
+                        if (percentage < 33) {
+                          return 'linear-gradient(to right, #10b981, #14b8a6)'; // green to teal
+                        } else if (percentage < 66) {
+                          return 'linear-gradient(to right, #fbbf24, #f59e0b)'; // yellow to amber
+                        } else {
+                          return 'linear-gradient(to right, #ef4444, #dc2626)'; // red to red-600
+                        }
+                      })(),
                       width:
                         binLevel_1 !== null
                           ? `${Math.min(
@@ -160,7 +183,7 @@ function Devices() {
                     <h3 className="text-2xl font-bold text-gray-800">
                       Gas Emissions
                     </h3>
-                    <p className="text-purple-600 text-sm">
+                    <p className="text-gray-600 text-sm">
                       Air Quality Sensor
                     </p>
                   </div>
@@ -169,24 +192,47 @@ function Devices() {
                   </div>
                 </div>
                 <div className="text-center">
-                  {gasEmissions_1 !== null && gasEmissions_1 > 600 ? (
-                    <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
-                      High
-                    </div>
-                  ) : (
-                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
-                      Normal
-                    </div>
-                  )}
+                  {(() => {
+                    const emissions = gasEmissions_1;
+                    if (emissions !== null && emissions < 200) {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
+                          Low
+                        </div>
+                      );
+                    } else if (emissions !== null && emissions < 600) {
+                      return (
+                        <div className="text-black text-sm font-bold mb-1 bg-yellow-400 inline-block px-8 py-1 rounded-full">
+                          Average
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
+                          High
+                        </div>
+                      );
+                    }
+                  })()}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {gasEmissions_1 !== null ? `${gasEmissions_1}` : "—"}
                   </div>
-                  <div className="text-purple-600 text-lg">ppm</div>
+                  <div className="text-gray-600 text-lg">ppm</div>
                 </div>
                 <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-purple-400 to-violet-400 rounded-full transition-all duration-1000"
+                    className="h-full rounded-full transition-all duration-1000"
                     style={{
+                      background: (() => {
+                        const emissions = gasEmissions_1;
+                        if (emissions !== null && emissions < 200) {
+                          return 'linear-gradient(to right, #10b981, #14b8a6)'; // green to teal
+                        } else if (emissions !== null && emissions < 600) {
+                          return 'linear-gradient(to right, #fbbf24, #f59e0b)'; // yellow to amber
+                        } else {
+                          return 'linear-gradient(to right, #ef4444, #dc2626)'; // red to red-600
+                        }
+                      })(),
                       width:
                         gasEmissions_1 !== null
                           ? `${Math.min((gasEmissions_1 / 1000) * 100, 100)}%`
@@ -203,7 +249,7 @@ function Devices() {
                     <h3 className="text-2xl font-bold text-gray-800">
                       Fire Detector
                     </h3>
-                    <p className="text-red-600 text-sm">Smoke Sensor</p>
+                    <p className="text-gray-600 text-sm">Smoke Sensor</p>
                   </div>
 
                   <div className="p-3 bg-gradient-to-br from-red-100 to-orange-100 rounded-2xl">
@@ -211,24 +257,47 @@ function Devices() {
                   </div>
                 </div>
                 <div className="text-center">
-                  {smoke_1 !== null && smoke_1 > 3000 ? (
-                    <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
-                      High
-                    </div>
-                  ) : (
-                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
-                      Normal
-                    </div>
-                  )}
+                  {(() => {
+                    const smoke = smoke_1;
+                    if (smoke !== null && smoke < 1000) {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
+                          Low
+                        </div>
+                      );
+                    } else if (smoke !== null && smoke < 3000) {
+                      return (
+                        <div className="text-black text-sm font-bold mb-1 bg-yellow-400 inline-block px-8 py-1 rounded-full">
+                          Average
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
+                          High
+                        </div>
+                      );
+                    }
+                  })()}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {smoke_1 !== null ? `${smoke_1}` : "—"}
                   </div>
-                  <div className="text-red-600 text-lg">ppm</div>
+                  <div className="text-gray-600 text-lg">ppm</div>
                 </div>
                 <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-red-400 to-orange-400 rounded-full transition-all duration-1000"
+                    className="h-full rounded-full transition-all duration-1000"
                     style={{
+                      background: (() => {
+                        const smoke = smoke_1;
+                        if (smoke !== null && smoke < 1000) {
+                          return 'linear-gradient(to right, #10b981, #14b8a6)'; // green to teal
+                        } else if (smoke !== null && smoke < 3000) {
+                          return 'linear-gradient(to right, #fbbf24, #f59e0b)'; // yellow to amber
+                        } else {
+                          return 'linear-gradient(to right, #ef4444, #dc2626)'; // red to red-600
+                        }
+                      })(),
                       width:
                         smoke_1 !== null
                           ? `${Math.min((smoke_1 / 4095) * 100, 100)}%`
@@ -267,7 +336,7 @@ function Devices() {
                     <h3 className="text-2xl font-bold text-gray-800">
                       Bin Level
                     </h3>
-                    <p className="text-emerald-600 text-sm">
+                    <p className="text-gray-600 text-sm">
                       Ultrasonic Sensor
                     </p>
                   </div>
@@ -277,26 +346,49 @@ function Devices() {
                   </div>
                 </div>
                 <div className="text-center">
-                  {binLevel_2 !== null && binLevel_2 < 10 ? (
-                    <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
-                      High
-                    </div>
-                  ) : (
-                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
-                      Normal
-                    </div>
-                  )}
+                  {(() => {
+                    const percentage = binLevel_2 !== null ? Math.round(((100 - binLevel_2) / 100) * 100) : 0;
+                    if (percentage < 33) {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
+                          Low
+                        </div>
+                      );
+                    } else if (percentage < 66) {
+                      return (
+                        <div className="text-black text-sm font-bold mb-1 bg-yellow-400 inline-block px-8 py-1 rounded-full">
+                          Average
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
+                          High
+                        </div>
+                      );
+                    }
+                  })()}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {binLevel_2 !== null
                       ? `${Math.round(((100 - binLevel_2) / 100) * 100)}`
                       : "—"}
                   </div>
-                  <div className="text-emerald-600 text-lg">%</div>
+                  <div className="text-gray-600 text-lg">%</div>
                 </div>
                 <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full transition-all duration-1000"
+                    className="h-full rounded-full transition-all duration-1000"
                     style={{
+                      background: (() => {
+                        const percentage = binLevel_2 !== null ? Math.round(((100 - binLevel_2) / 100) * 100) : 0;
+                        if (percentage < 33) {
+                          return 'linear-gradient(to right, #10b981, #14b8a6)'; // green to teal
+                        } else if (percentage < 66) {
+                          return 'linear-gradient(to right, #fbbf24, #f59e0b)'; // yellow to amber
+                        } else {
+                          return 'linear-gradient(to right, #ef4444, #dc2626)'; // red to red-600
+                        }
+                      })(),
                       width:
                         binLevel_2 !== null
                           ? `${Math.min(
@@ -316,7 +408,7 @@ function Devices() {
                     <h3 className="text-2xl font-bold text-gray-800">
                       Gas Emissions
                     </h3>
-                    <p className="text-purple-600 text-sm">
+                    <p className="text-gray-600 text-sm">
                       Air Quality Sensor
                     </p>
                   </div>
@@ -325,24 +417,47 @@ function Devices() {
                   </div>
                 </div>
                 <div className="text-center">
-                  {gasEmissions_2 !== null && gasEmissions_2 > 600 ? (
-                    <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
-                      High
-                    </div>
-                  ) : (
-                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
-                      Normal
-                    </div>
-                  )}
+                  {(() => {
+                    const emissions = gasEmissions_2;
+                    if (emissions !== null && emissions < 200) {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
+                          Low
+                        </div>
+                      );
+                    } else if (emissions !== null && emissions < 600) {
+                      return (
+                        <div className="text-black text-sm font-bold mb-1 bg-yellow-400 inline-block px-8 py-1 rounded-full">
+                          Average
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
+                          High
+                        </div>
+                      );
+                    }
+                  })()}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {gasEmissions_2 !== null ? `${gasEmissions_2}` : "—"}
                   </div>
-                  <div className="text-purple-600 text-lg">ppm</div>
+                  <div className="text-gray-600 text-lg">ppm</div>
                 </div>
                 <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-purple-400 to-violet-400 rounded-full transition-all duration-1000"
+                    className="h-full rounded-full transition-all duration-1000"
                     style={{
+                      background: (() => {
+                        const emissions = gasEmissions_2;
+                        if (emissions !== null && emissions < 200) {
+                          return 'linear-gradient(to right, #10b981, #14b8a6)'; // green to teal
+                        } else if (emissions !== null && emissions < 600) {
+                          return 'linear-gradient(to right, #fbbf24, #f59e0b)'; // yellow to amber
+                        } else {
+                          return 'linear-gradient(to right, #ef4444, #dc2626)'; // red to red-600
+                        }
+                      })(),
                       width:
                         gasEmissions_2 !== null
                           ? `${Math.min((gasEmissions_2 / 1000) * 100, 100)}%`
@@ -359,31 +474,54 @@ function Devices() {
                     <h3 className="text-2xl font-bold text-gray-800">
                       Fire Detector
                     </h3>
-                    <p className="text-red-600 text-sm">Smoke Sensor</p>
+                    <p className="text-gray-600 text-sm">Smoke Sensor</p>
                   </div>
                   <div className="p-3 bg-gradient-to-br from-red-100 to-orange-100 rounded-2xl">
                     <span className="text-3xl">🔥</span>
                   </div>
                 </div>
                 <div className="text-center">
-                  {smoke_2 !== null && smoke_2 > 3000 ? (
-                    <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
-                      High
-                    </div>
-                  ) : (
-                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
-                      Normal
-                    </div>
-                  )}
+                  {(() => {
+                    const smoke = smoke_2;
+                    if (smoke !== null && smoke < 1000) {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
+                          Low
+                        </div>
+                      );
+                    } else if (smoke !== null && smoke < 3000) {
+                      return (
+                        <div className="text-black text-sm font-bold mb-1 bg-yellow-400 inline-block px-8 py-1 rounded-full">
+                          Average
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
+                          High
+                        </div>
+                      );
+                    }
+                  })()}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {smoke_2 !== null ? `${smoke_2}` : "—"}
                   </div>
-                  <div className="text-red-600 text-lg">ppm</div>
+                  <div className="text-gray-600 text-lg">ppm</div>
                 </div>
                 <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-red-400 to-orange-400 rounded-full transition-all duration-1000"
+                    className="h-full rounded-full transition-all duration-1000"
                     style={{
+                      background: (() => {
+                        const smoke = smoke_2;
+                        if (smoke !== null && smoke < 1000) {
+                          return 'linear-gradient(to right, #10b981, #14b8a6)'; // green to teal
+                        } else if (smoke !== null && smoke < 3000) {
+                          return 'linear-gradient(to right, #fbbf24, #f59e0b)'; // yellow to amber
+                        } else {
+                          return 'linear-gradient(to right, #ef4444, #dc2626)'; // red to red-600
+                        }
+                      })(),
                       width:
                         smoke_2 !== null
                           ? `${Math.min((smoke_2 / 4095) * 100, 100)}%`
@@ -422,7 +560,7 @@ function Devices() {
                     <h3 className="text-2xl font-bold text-gray-800">
                       Bin Level
                     </h3>
-                    <p className="text-emerald-600 text-sm">
+                    <p className="text-gray-600 text-sm">
                       Ultrasonic Sensor
                     </p>
                   </div>
@@ -432,26 +570,49 @@ function Devices() {
                   </div>
                 </div>
                 <div className="text-center">
-                  {binLevel_3 !== null && binLevel_3 < 10 ? (
-                    <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
-                      High
-                    </div>
-                  ) : (
-                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
-                      Normal
-                    </div>
-                  )}
+                  {(() => {
+                    const percentage = binLevel_3 !== null ? Math.round(((100 - binLevel_3) / 100) * 100) : 0;
+                    if (percentage < 33) {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
+                          Low
+                        </div>
+                      );
+                    } else if (percentage < 66) {
+                      return (
+                        <div className="text-black text-sm font-bold mb-1 bg-yellow-400 inline-block px-8 py-1 rounded-full">
+                          Average
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
+                          High
+                        </div>
+                      );
+                    }
+                  })()}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {binLevel_3 !== null
                       ? `${Math.round(((100 - binLevel_3) / 100) * 100)}`
                       : "—"}
                   </div>
-                  <div className="text-emerald-600 text-lg">%</div>
+                  <div className="text-gray-600 text-lg">%</div>
                 </div>
                 <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full transition-all duration-1000"
+                    className="h-full rounded-full transition-all duration-1000"
                     style={{
+                      background: (() => {
+                        const percentage = binLevel_3 !== null ? Math.round(((100 - binLevel_3) / 100) * 100) : 0;
+                        if (percentage < 33) {
+                          return 'linear-gradient(to right, #10b981, #14b8a6)'; // green to teal
+                        } else if (percentage < 66) {
+                          return 'linear-gradient(to right, #fbbf24, #f59e0b)'; // yellow to amber
+                        } else {
+                          return 'linear-gradient(to right, #ef4444, #dc2626)'; // red to red-600
+                        }
+                      })(),
                       width:
                         binLevel_3 !== null
                           ? `${Math.min(
@@ -471,7 +632,7 @@ function Devices() {
                     <h3 className="text-2xl font-bold text-gray-800">
                       Gas Emissions
                     </h3>
-                    <p className="text-purple-600 text-sm">
+                    <p className="text-gray-600 text-sm">
                       Air Quality Sensor
                     </p>
                   </div>
@@ -480,24 +641,47 @@ function Devices() {
                   </div>
                 </div>
                 <div className="text-center">
-                  {gasEmissions_3 !== null && gasEmissions_3 > 600 ? (
-                    <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
-                      High
-                    </div>
-                  ) : (
-                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
-                      Normal
-                    </div>
-                  )}
+                  {(() => {
+                    const emissions = gasEmissions_3;
+                    if (emissions !== null && emissions < 200) {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
+                          Low
+                        </div>
+                      );
+                    } else if (emissions !== null && emissions < 600) {
+                      return (
+                        <div className="text-black text-sm font-bold mb-1 bg-yellow-400 inline-block px-8 py-1 rounded-full">
+                          Average
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
+                          High
+                        </div>
+                      );
+                    }
+                  })()}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {gasEmissions_3 !== null ? `${gasEmissions_3}` : "—"}
                   </div>
-                  <div className="text-purple-600 text-lg">ppm</div>
+                  <div className="text-gray-600 text-lg">ppm</div>
                 </div>
                 <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-purple-400 to-violet-400 rounded-full transition-all duration-1000"
+                    className="h-full rounded-full transition-all duration-1000"
                     style={{
+                      background: (() => {
+                        const emissions = gasEmissions_3;
+                        if (emissions !== null && emissions < 200) {
+                          return 'linear-gradient(to right, #10b981, #14b8a6)'; // green to teal
+                        } else if (emissions !== null && emissions < 600) {
+                          return 'linear-gradient(to right, #fbbf24, #f59e0b)'; // yellow to amber
+                        } else {
+                          return 'linear-gradient(to right, #ef4444, #dc2626)'; // red to red-600
+                        }
+                      })(),
                       width:
                         gasEmissions_3 !== null
                           ? `${Math.min((gasEmissions_3 / 1000) * 100, 100)}%`
@@ -514,31 +698,54 @@ function Devices() {
                     <h3 className="text-2xl font-bold text-gray-800">
                       Fire Detector
                     </h3>
-                    <p className="text-red-600 text-sm">Smoke Sensor</p>
+                    <p className="text-gray-600 text-sm">Smoke Sensor</p>
                   </div>
                   <div className="p-3 bg-gradient-to-br from-red-100 to-orange-100 rounded-2xl">
                     <span className="text-3xl">🔥</span>
                   </div>
                 </div>
                 <div className="text-center">
-                  {smoke_3 !== null && smoke_3 > 3000 ? (
-                    <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
-                      High
-                    </div>
-                  ) : (
-                    <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
-                      Normal
-                    </div>
-                  )}
+                  {(() => {
+                    const smoke = smoke_3;
+                    if (smoke !== null && smoke < 1000) {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-green-500 inline-block px-8 py-1 rounded-full">
+                          Low
+                        </div>
+                      );
+                    } else if (smoke !== null && smoke < 3000) {
+                      return (
+                        <div className="text-black text-sm font-bold mb-1 bg-yellow-400 inline-block px-8 py-1 rounded-full">
+                          Average
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className="text-white text-sm font-bold mb-1 bg-red-500 inline-block px-8 py-1 rounded-full animate-pulse">
+                          High
+                        </div>
+                      );
+                    }
+                  })()}
                   <div className="text-5xl font-bold text-gray-800 mb-2">
                     {smoke_3 !== null ? `${smoke_3}` : "—"}
                   </div>
-                  <div className="text-red-600 text-lg">ppm</div>
+                  <div className="text-gray-600 text-lg">ppm</div>
                 </div>
                 <div className="mt-6 h-3 bg-gray-200 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-red-400 to-orange-400 rounded-full transition-all duration-1000"
+                    className="h-full rounded-full transition-all duration-1000"
                     style={{
+                      background: (() => {
+                        const smoke = smoke_3;
+                        if (smoke !== null && smoke < 1000) {
+                          return 'linear-gradient(to right, #10b981, #14b8a6)'; // green to teal
+                        } else if (smoke !== null && smoke < 3000) {
+                          return 'linear-gradient(to right, #fbbf24, #f59e0b)'; // yellow to amber
+                        } else {
+                          return 'linear-gradient(to right, #ef4444, #dc2626)'; // red to red-600
+                        }
+                      })(),
                       width:
                         smoke_3 !== null
                           ? `${Math.min((smoke_3 / 4095) * 100, 100)}%`
