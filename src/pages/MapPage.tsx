@@ -1,8 +1,9 @@
 
 
 
-import  { useState, useEffect } from "react";
-import { APIProvider, Map, Marker, InfoWindow } from "@vis.gl/react-google-maps";
+/// <reference types="google.maps" />
+import { useState, useEffect } from "react";
+import { APIProvider, Map, Marker, InfoWindow, useMapsLibrary, useMap } from "@vis.gl/react-google-maps";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, app } from "../utils/fireBaseConfig";
 import { signOut } from "firebase/auth";
@@ -20,7 +21,33 @@ type Location = {
   position: { lat: number; lng: number };
 };
 
+function Directions({ origin, destination }: { origin: google.maps.LatLngLiteral, destination: google.maps.LatLngLiteral }) {
+  const map = useMap();
+  const routesLibrary = useMapsLibrary('routes');
+  const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
+  const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
 
+  useEffect(() => {
+    if (!routesLibrary || !map) return;
+    setDirectionsService(new routesLibrary.DirectionsService());
+    setDirectionsRenderer(new routesLibrary.DirectionsRenderer({ map }));
+  }, [routesLibrary, map]);
+
+  useEffect(() => {
+    if (!directionsService || !directionsRenderer) return;
+
+    directionsService.route({
+      origin,
+      destination,
+      travelMode: google.maps.TravelMode.DRIVING,
+      provideRouteAlternatives: true,
+    }).then((response: google.maps.DirectionsResult) => {
+      directionsRenderer.setDirections(response);
+    });
+  }, [directionsService, directionsRenderer, origin, destination]);
+
+  return null;
+}
 
 
 function MapPage() {
@@ -64,6 +91,8 @@ function MapPage() {
   };
 
   const [selected, setSelected] = useState<Location | null>(null);
+  const [destination, setDestination] = useState<Location | null>(null);
+  const [googleLoaded, setGoogleLoaded] = useState(false);
 
   const [binLevel_1, setBinLevel_1] = useState<number | null>(null);
   const [gasEmissions_1, setGasEmissions_1] = useState<number | null>(null);
@@ -113,6 +142,8 @@ function MapPage() {
     });
   }, [db]);
 
+  const startPoint = locations.find(loc => loc.id === 4);
+
   return (
     <div className="min-h-screen bg-slate-50">
       {user ? (
@@ -150,28 +181,32 @@ function MapPage() {
           </div>
 
           {/* Map Component */}
-          <APIProvider apiKey={API_KEY}>
+          <APIProvider apiKey={API_KEY} onLoad={() => setGoogleLoaded(true)}>
             <Map
               style={{ width: "100%", height: "83vh" }}
               defaultCenter={{ lat: 29.336, lng: 48.025 }}
               defaultZoom={14}
               gestureHandling="greedy"
               disableDefaultUI={false}
-              
+
             >
+              {destination && startPoint && (
+                <Directions origin={startPoint.position} destination={destination.position} />
+              )}
+
               {locations.map((loc) => (
                 <Marker
                   key={loc.id}
                   position={loc.position}
-                  icon={loc.id === 4 ? {
+                  icon={googleLoaded ? (loc.id === 4 ? {
                     url: "/truck_logo.png",
-                    scaledSize: { width: 40, height: 40 },
-                    
+                    scaledSize: new google.maps.Size(40, 40),
+
                   } : {
                     url: "/logo.png",
-                    scaledSize: { width: 30, height: 30 },
+                    scaledSize: new google.maps.Size(30, 30),
                     // anchor: { x: 25, y: 25 }
-                  }}
+                  }) : undefined}
                   onClick={() => setSelected(loc)}
                 />
               ))}
@@ -186,6 +221,28 @@ function MapPage() {
                       <h3 className="text-lg font-bold text-gray-800 mb-1">{selected.name}</h3>
                       <p className="text-sm text-gray-600">{selected.description}</p>
                     </div>
+
+                    {selected.id === 4 && (
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium text-gray-700 mb-2">Select a destination:</p>
+                        {locations.filter(l => l.id !== 4).map(bin => (
+                          <button
+                            key={bin.id}
+                            onClick={() => {
+                              setDestination(bin);
+                              setSelected(null);
+                            }}
+                            className="w-full text-left px-3 py-2 rounded-lg bg-gray-50 hover:bg-blue-50 border border-gray-200 hover:border-blue-200 transition-colors duration-200 flex items-center justify-between group"
+                          >
+                            <span className="text-sm text-gray-700 group-hover:text-blue-700">{bin.name}</span>
+                            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                              Go
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
                     {(selected.id === 1 || selected.id === 2 || selected.id === 3) && (() => {
                       const binLevel = selected.id === 1 ? binLevel_1 : selected.id === 2 ? binLevel_2 : binLevel_3;
                       const gasEmissions = selected.id === 1 ? gasEmissions_1 : selected.id === 2 ? gasEmissions_2 : gasEmissions_3;
@@ -354,6 +411,13 @@ function MapPage() {
                               ></div>
                             </div>
                           </div>
+
+                          <button
+                            onClick={() => setDestination(selected)}
+                            className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200 flex items-center justify-center gap-2"
+                          >
+                            <span>🚗</span> Show Route
+                          </button>
                         </div>
                       );
                     })()}

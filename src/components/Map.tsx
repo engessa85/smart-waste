@@ -1,5 +1,4 @@
-
-
+/// <reference types="google.maps" />
 import { useState } from "react";
 import { APIProvider, Map as GoogleMap, Marker, InfoWindow } from "@vis.gl/react-google-maps";
 
@@ -12,8 +11,8 @@ type Location = {
   position: { lat: number; lng: number };
 };
 
-function Map(props:Location) {
-  
+function Map(props: Location) {
+
   const location: Location = {
     id: props.id,
     name: props.name,
@@ -22,10 +21,11 @@ function Map(props:Location) {
   };
 
   const [selected, setSelected] = useState<Location | null>(null);
+  const [googleLoaded, setGoogleLoaded] = useState(false);
 
   return (
     <div className="bg-slate-50 p-4">
-      <APIProvider apiKey={API_KEY}>
+      <APIProvider apiKey={API_KEY} onLoad={() => setGoogleLoaded(true)}>
         <GoogleMap
           style={{ width: "100%", height: "70vh", borderRadius: "12px" }}
           defaultCenter={location.position}
@@ -35,11 +35,11 @@ function Map(props:Location) {
         >
           <Marker
             position={location.position}
-            icon={{
+            icon={googleLoaded ? {
               url: "/logo.png",
-              scaledSize: { width: 40, height: 40 },
-              anchor: { x: 20, y: 20 },
-            }}
+              scaledSize: new google.maps.Size(40, 40),
+              anchor: new google.maps.Point(20, 20),
+            } : undefined}
             onClick={() => setSelected(location)}
           />
 
