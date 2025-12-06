@@ -27,19 +27,19 @@ function MapPage() {
   const locations: Location[] = [
     {
       id: 1,
-      name: "Recycling bin #1",
+      name: "Recycling bin 1",
       description: "Monitor the status of bin #1",
       position: { lat: 29.320483, lng: 48.044731 },
     },
     {
       id: 2,
-      name: "Recycling bin #2",
+      name: "Recycling bin 2",
       description: "Monitor the status of bin #2",
       position: { lat: 29.321241, lng: 48.044704 },
     },
     {
       id: 3,
-      name: "Recycling bin #3",
+      name: "Recycling bin 3",
       description: "Monitor the status of bin #3",
       position: { lat: 29.321653, lng: 48.044543 },
     },
