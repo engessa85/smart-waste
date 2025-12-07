@@ -74,7 +74,8 @@ function MapPage() {
       id: 4,
       name: "Start Point",
       description: "Starting location",
-      position: { lat: 29.337954, lng: 48.020295 },
+      // position: { lat: 29.337954, lng: 48.020295 },
+      position: { lat: 29.323135002596924, lng: 48.041586183528615 },
     }
   ];
 
